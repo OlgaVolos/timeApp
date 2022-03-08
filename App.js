@@ -13,16 +13,46 @@ import {store} from "./src/redux/store";
 import {Provider, useSelector} from "react-redux";
 
 // const Stack = createNativeStackNavigator() //для звичайної навігації між екранами
-// const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator()
 
 const ReduxContainer  = () => {
     const {isLogged} = useSelector((state)=> state.loginReducer )
     return(
-        <View style={styles.reduxStyle}>
-            {isLogged? <Dashboard/> : <LoginScreen/>}
+        <NavigationContainer>
+            {isLogged?
+                (<Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
+
+                        if (route.name === 'Home') {
+                            iconName = focused
+                                ? 'ios-information-circle'
+                                : 'ios-information-circle-outline';
+                        } else if (route.name === 'TimeApp') {
+                            iconName = 'time';
+                        }
+
+                        // You can return any component that you like here!
+                        return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: 'tomato',
+                    tabBarInactiveTintColor: 'gray',
+                })}>
+                <Tab.Screen name="Home" component={UserList} />
+                <Tab.Screen name="TimeApp" component={TimeApp} />
+            </Tab.Navigator>)
+                : <LoginScreen/>}
             <StatusBar style='dark'/>
-        </View>
+        </NavigationContainer>
+
     );
+    //     <View style={styles.container}>
+    //         {isLogged?
+    //             <TimeApp/> : <LoginScreen/>}
+    //         <StatusBar style='dark'/>
+    //     </View>
+    // );
 }; //робиться для того, щоб не било помилку при запуску. Нам треба розмежувати Провайдер
 
 export default function App() {
@@ -81,14 +111,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#25224D',
+        alignItems: 'center',
+        justifyContent: 'center'
 
 
     },
-    reduxStyle: {
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
+
 
 });

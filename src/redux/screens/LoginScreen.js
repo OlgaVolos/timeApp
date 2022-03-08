@@ -13,11 +13,17 @@ const onPress  = () => {
         dispatch(doLogin())
 };
 
-    return <View>
-        <Button title={'Press to login'} onPress={onPress}/>
+    return <View style={styles.loginStyle}>
+        <Button  title={'Press to login'} onPress={onPress}/>
     </View>
 };
 
 export default LoginScreen;
 
-let styles = StyleSheet.create({});
+let styles = StyleSheet.create({
+    loginStyle: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});
